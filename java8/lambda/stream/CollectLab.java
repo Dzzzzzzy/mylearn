@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import java8.lambda.POJO.Student;
 
-public class Collect {
+public class CollectLab {
     public static void main(String[] args) {
         List<Student> studentList = Stream.of(new Student("路飞", 22, 175),
                 new Student("红发", 40, 180),

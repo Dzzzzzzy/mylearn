@@ -1,6 +1,7 @@
 package java8.lambda.POJO;
 
 public class Student {
+    
     private String name;
 
     private Integer age;
