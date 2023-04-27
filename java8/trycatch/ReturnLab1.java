@@ -1,8 +1,8 @@
 /*
  * @Author: dongzhenyang1 dongzhenyang1@jd.com
  * @Date: 2023-02-24 11:11:20
- * @LastEditors: dongzhenyang1 dongzhenyang1@jd.com
- * @LastEditTime: 2023-02-26 15:33:12
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-27 14:59:46
  * @FilePath: /mylearn/java8/trycatch/ReturnLab1.java
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,6 +22,8 @@ public class ReturnLab1 {
         System.out.println(function4());
         System.out.println("==============");
         System.out.println(function5().get("key1"));
+        System.out.println("==============");
+        System.out.println(function6());
     }
 
     private static int function1() {
@@ -85,6 +87,15 @@ public class ReturnLab1 {
             map = null;
         }
         return map;
+    }
+
+    private static int function6() {
+        try {
+            int i = 12 / 0;
+        } catch (Exception e) {
+            System.out.println("catch");
+        }
+        return 666;
     }
 
 }
