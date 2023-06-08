@@ -1,8 +1,8 @@
 /*
  * @Author: dongzhenyang1 dongzhenyang1@jd.com
  * @Date: 2023-03-05 16:11:58
- * @LastEditors: dongzhenyang1 dongzhenyang1@jd.com
- * @LastEditTime: 2023-03-05 18:05:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-02 19:27:32
  * @FilePath: /mylearn/java8/collection/ArrayListLab.java
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -31,7 +31,7 @@ public class ArrayListLab {
         // clearFunctionLab();
         // removeFunctionLab();
         // removeAllFunctionLab();
-        removeIfFunctionLab();
+        // removeIfFunctionLab();
         // sizeFunctionLab();
         // isEmptyFunctionLab();
         // subListFunctionLab();
@@ -44,7 +44,7 @@ public class ArrayListLab {
         // toStringFunctionLab();
         // containsFunctionLab();
         // containsAllFunctionLab();
-        // retainAllFunctionLab();
+        retainAllFunctionLab();
     }
 
     /**

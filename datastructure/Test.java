@@ -4,34 +4,44 @@
  */
 package datastructure;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+
+import java8.collection.Person;
+
 public class Test{
 
-    public static int mySqrt(int x) {
-        // 背景知识，连续个奇数的和为平方数
-        // 1+3+5=9=3^2
-        int count = 0;
-        int sum = 0;
-        int oddNum = 1;
-        while(x >= 0) {
-            x -= oddNum;
-            oddNum += 2;
-            count++;
-        }
-        return count - 1;
-    }
-    
-    
+    // public static void main(String[] args) {
+    //     String phrase = "现在下单，4月29日发货";
+    //     StringBuilder commitmentPhrase = new StringBuilder(phrase);
+    //     commitmentPhrase.insert(5, "承诺");
+    //     System.out.println(commitmentPhrase);
+
+    // }
 
     public static void main(String[] args) {
-        System.out.println(mySqrt(2147395600));
-        String s = null;
-        if (1 == 2) {
-            s = "safasf";
+        TreeMap<Person, String> pdata = new TreeMap<Person, String>();
+        pdata.put(new Person("张三", 30), "zhangsan");
+        pdata.put(new Person("李四", 20), "lisi");
+        System.out.println(pdata.toString());
+        pdata.put(new Person("王五", 10), "wangwu");
+        pdata.put(new Person("小红", 5), "xiaohong");
+        
+        // 得到key的值的同时得到key所对应的值
+        Set<Person> keys = pdata.keySet();
+        for (Person key : keys) {
+            System.out.println(key.getAge() + "-" + key.getName());
+
         }
-        if (s == null) {
-            System.out.println(123);
-        } else {
-            System.out.println(345);
+
+        List<Person> pList = new ArrayList<>();
+        pList.add(new Person("zhangsan", 18));
+        pList.add(new Person("lisi", 3));
+        for (Person p : pList) {
+            System.out.println(p.toString());
         }
     }
+
 }
