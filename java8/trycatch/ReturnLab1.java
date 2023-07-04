@@ -2,7 +2,7 @@
  * @Author: dongzhenyang1 dongzhenyang1@jd.com
  * @Date: 2023-02-24 11:11:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-27 14:59:46
+ * @LastEditTime: 2023-06-30 15:28:43
  * @FilePath: /mylearn/java8/trycatch/ReturnLab1.java
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class ReturnLab1 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println(function1());
         System.out.println("==============");
         System.out.println(function2());
@@ -24,6 +24,33 @@ public class ReturnLab1 {
         System.out.println(function5().get("key1"));
         System.out.println("==============");
         System.out.println(function6());
+        System.out.println("==============");
+        if (function7()) {
+            System.out.println("hahahaha");
+        }
+        System.out.println(function8());
+    }
+
+    private static int function8() {
+        int a = 10;
+        try {
+            a = a / 0;
+        } catch (Exception e) {
+            a += 10;
+        }
+        return a + 6;
+    }
+
+    private static boolean function7() throws Exception {
+        int a = 1;
+        try {
+            if (a / 0 == 1) {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 
     private static int function1() {

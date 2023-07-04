@@ -4,44 +4,33 @@
  */
 package datastructure;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeMap;
-
-import java8.collection.Person;
+import java.util.Locale;
 
 public class Test{
 
-    // public static void main(String[] args) {
-    //     String phrase = "现在下单，4月29日发货";
-    //     StringBuilder commitmentPhrase = new StringBuilder(phrase);
-    //     commitmentPhrase.insert(5, "承诺");
-    //     System.out.println(commitmentPhrase);
+    public static void main(String[] args) throws ParseException {
+        Date toDeliveryTime = new Date();
+        String dateString;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateString = dateFormat.format(toDeliveryTime);
+        System.out.println(dateString);
+        toDeliveryTime = dateFormat.parse(dateString);
+        System.out.println(toDeliveryTime);
+        Locale loc = Locale.getDefault();
+        Calendar calendar = new GregorianCalendar(loc);
+        calendar.setTime(toDeliveryTime);
+        System.out.println(calendar.getTime());
+        calendar.add(Calendar.HOUR, 24);
+        System.out.println(calendar.getTime());
 
-    // }
-
-    public static void main(String[] args) {
-        TreeMap<Person, String> pdata = new TreeMap<Person, String>();
-        pdata.put(new Person("张三", 30), "zhangsan");
-        pdata.put(new Person("李四", 20), "lisi");
-        System.out.println(pdata.toString());
-        pdata.put(new Person("王五", 10), "wangwu");
-        pdata.put(new Person("小红", 5), "xiaohong");
-        
-        // 得到key的值的同时得到key所对应的值
-        Set<Person> keys = pdata.keySet();
-        for (Person key : keys) {
-            System.out.println(key.getAge() + "-" + key.getName());
-
-        }
-
-        List<Person> pList = new ArrayList<>();
-        pList.add(new Person("zhangsan", 18));
-        pList.add(new Person("lisi", 3));
-        for (Person p : pList) {
-            System.out.println(p.toString());
-        }
     }
 
 }
