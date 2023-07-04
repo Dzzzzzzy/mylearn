@@ -19,6 +19,7 @@ Java ConcurrentModificationException异常原因和解决方法
 一.ConcurrentModificationException异常出现的原因
 　　先看下面这段代码：
 
+```java
 public class Test {
     public static void main(String[] args)  {
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -31,6 +32,7 @@ public class Test {
         }
     }
 }
+```
  　　运行结果：
 
 　　
@@ -41,14 +43,14 @@ public class Test {
 
 　　首先看ArrayList的iterator()方法的具体实现，查看源码发现在ArrayList的源码中并没有iterator()这个方法，那么很显然这个方法应该是其父类或者实现的接口中的方法，我们在其父类AbstractList中找到了iterator()方法的具体实现，下面是其实现代码：
 
-1
-2
-3
+```java
 public Iterator<E> iterator() {
     return new Itr();
 }
+```
  　　从这段代码可以看出返回的是一个指向Itr类型对象的引用，我们接着看Itr的具体实现，在AbstractList类中找到了Itr类的具体实现，它是AbstractList的一个成员内部类，下面这段代码是Itr类的所有实现：
 
+```java
 private class Itr implements Iterator<E> {
     int cursor = 0;
     int lastRet = -1;
@@ -88,6 +90,7 @@ private class Itr implements Iterator<E> {
         throw new ConcurrentModificationException();
     }
 }
+```
  　　首先我们看一下它的几个成员变量：
 
 　　cursor：表示下一个要访问的元素的索引，从next()方法的具体实现就可看出
@@ -98,22 +101,27 @@ private class Itr implements Iterator<E> {
 
 　　modCount是AbstractList类中的一个成员变量
 
-1
+```java
 protected transient int modCount = 0;
- 　　该值表示对List的修改次数，查看ArrayList的add()和remove()方法就可以发现，每次调用add()方法或者remove()方法就会对modCount进行加1操作。
+
+``` 　　
+   该值表示对List的修改次数，查看ArrayList的add()和remove()方法就可以发现，每次调用add()方法或者remove()方法就会对modCount进行加1操作。
 
 　　好了，到这里我们再看看上面的程序：
 
 　　当调用list.iterator()返回一个Iterator之后，通过Iterator的hashNext()方法判断是否还有元素未被访问，我们看一下hasNext()方法，hashNext()方法的实现很简单：
 
 
+```java
 public boolean hasNext() {
     return cursor != size();
 }
+```
  　　如果下一个访问的元素下标不等于ArrayList的大小，就表示有元素需要访问，这个很容易理解，如果下一个访问元素的下标等于ArrayList的大小，则肯定到达末尾了。
 
 　　然后通过Iterator的next()方法获取到下标为0的元素，我们看一下next()方法的具体实现：
 
+```java
 public E next() {
     checkForComodification();
  try {
@@ -125,12 +133,14 @@ public E next() {
     throw new NoSuchElementException();
  }
 }
+```
  　　这里是非常关键的地方：首先在next()方法中会调用checkForComodification()方法，然后根据cursor的值获取到元素，接着将cursor的值赋给lastRet，并对cursor的值进行加1操作。初始时，cursor为0，lastRet为-1，那么调用一次之后，cursor的值为1，lastRet的值为0。注意此时，modCount为0，expectedModCount也为0。
 
 　　接着往下看，程序中判断当前元素的值是否为2，若为2，则调用list.remove()方法来删除该元素。
 
 　　我们看一下在ArrayList中的remove()方法做了什么：
 
+```java
 public boolean remove(Object o) {
     if (o == null) {
         for (int index = 0; index < size; index++)
@@ -147,8 +157,10 @@ public boolean remove(Object o) {
     }
     return false;
 }
+```
  
  
+```java
 private void fastRemove(int index) {
     modCount++;
     int numMoved = size - index - 1;
@@ -157,6 +169,7 @@ private void fastRemove(int index) {
                 numMoved);
     elementData[--size] = null; // Let gc do its work
 }
+```
  　　通过remove方法删除元素最终是调用的fastRemove()方法，在fastRemove()方法中，首先对modCount进行加1操作（因为对集合修改了一次），然后接下来就是删除元素的操作，最后将size进行减1操作，并将引用置为null以方便垃圾收集器进行回收工作。
 
 　　那么注意此时各个变量的值：对于iterator，其expectedModCount为0，cursor的值为1，lastRet的值为0。
@@ -169,10 +182,12 @@ private void fastRemove(int index) {
 
 　　在checkForComodification方法中进行的操作是：
 
+```java
 final void checkForComodification() {
     if (modCount != expectedModCount)
     throw new ConcurrentModificationException();
 }
+```
  　　如果modCount不等于expectedModCount，则抛出ConcurrentModificationException异常。
 
 　　很显然，此时modCount为1，而expectedModCount为0，因此程序就抛出了ConcurrentModificationException异常。
@@ -188,6 +203,7 @@ final void checkForComodification() {
 
 　　其实很简单，细心的朋友可能发现在Itr类中也给出了一个remove()方法：
 
+```java
 public void remove() {
     if (lastRet == -1)
     throw new IllegalStateException();
@@ -203,14 +219,17 @@ public void remove() {
     throw new ConcurrentModificationException();
     }
 }
+```
  　　在这个方法中，删除元素实际上调用的就是list.remove()方法，但是它多了一个操作：
 
-1
-expectedModCount = modCount;
- 　　因此，在迭代器中如果要删除元素的话，需要调用Itr类的remove方法。
+```java
+    expectedModCount = modCount;
+``` 　　
+因此，在迭代器中如果要删除元素的话，需要调用Itr类的remove方法。
 
 　　将上述代码改为下面这样就不会报错了：
 
+```java
 public class Test {
     public static void main(String[] args)  {
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -223,8 +242,10 @@ public class Test {
         }
     }
 }
+```
 三.在多线程环境下的解决方法
 　　上面的解决办法在单线程环境下适用，但是在多线程下适用吗？看下面一个例子：
+```java
 public class Test {
     static ArrayList<Integer> list = new ArrayList<Integer>();
     public static void main(String[] args)  {
@@ -261,6 +282,7 @@ public class Test {
         thread2.start();
     }
 }
+```
  　　运行结果：
 
 　　
