@@ -4,6 +4,7 @@
  */
 package datastructure;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,26 +12,23 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Test{
 
     public static void main(String[] args) throws ParseException {
-        Date toDeliveryTime = new Date();
-        String dateString;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateString = dateFormat.format(toDeliveryTime);
-        System.out.println(dateString);
-        toDeliveryTime = dateFormat.parse(dateString);
-        System.out.println(toDeliveryTime);
-        Locale loc = Locale.getDefault();
-        Calendar calendar = new GregorianCalendar(loc);
-        calendar.setTime(toDeliveryTime);
-        System.out.println(calendar.getTime());
-        calendar.add(Calendar.HOUR, 24);
-        System.out.println(calendar.getTime());
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy:MM:dd");
+    try {
+        dateFormat.set2DigitYearStart(new Date(978278400000L));
+        System.out.println(dateFormat.parse("00:12:01"));
+    } catch (ParseException e) {
+        e.printStackTrace();
     }
+    }
+
 
 }
