@@ -4,13 +4,14 @@
  */
 package java8.other;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AtomicBooleanLab implements Runnable {
 
     private static boolean exists = false;
 
-    private static AtomicBoolean EXISTS = new AtomicBoolean(false);
+    private static AtomicBoolean EXISTS = new AtomicBoolean();
 
     private String name;
 
@@ -23,17 +24,12 @@ public class AtomicBooleanLab implements Runnable {
     @Override
     public void run() {
         if (!EXISTS.get()) {
-            try {
-                EXISTS.set(true);
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            EXISTS.set(true);
             exists = true;
             System.out.println(name + " enter");
             try {
                 System.out.println(name + " working");
-                Thread.sleep(1000);
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
